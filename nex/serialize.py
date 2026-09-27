@@ -10,7 +10,7 @@ from .parser import parse
 
 
 def pack_derived(node: Program | Statement | Node) -> Program | Statement | Node:
-    """Collapse ( agto seni ) → ( seno ) when the packed kind exists."""
+    """Collapse ( agto seni ) → ( senu ) when the packed kind exists."""
     if isinstance(node, Program):
         return Program([pack_derived(s) for s in node.statements])  # type: ignore
     if isinstance(node, Statement):

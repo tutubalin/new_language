@@ -1,11 +1,14 @@
 """Nex lexicon.
 
 Closed-class items are part of the grammar (roles, features, operators).
-Open-class roots are events, kinds, and qualities. Form encodes type:
+Open-class roots are events, kinds, and qualities. Form encodes type,
+and the type vowels are disjoint on purpose — a derived noun cannot
+land on a primitive kind:
 
-    events     end in -i
-    kinds      end in -o
-    qualities  end in -a
+    events              end in -i
+    primitive kinds     end in -o
+    qualities           end in -a
+    derived agent kinds end in -u   (seni → senu, never seno)
 
 First consonant loosely marks semantic field so similar meanings share
 form — a featural hint for character-aware models and for embedding init.
@@ -312,7 +315,7 @@ KINDS: tuple[Entry, ...] = (
     _e("relo", "kind", "abstract", "relation", "relation"),
     _e("sovo", "kind", "sense", "sound", "sound"),
     _e("luxo", "kind", "sense", "light", "light"),
-    _e("kolo", "kind", "sense", "color", "color/colour"),
+    _e("tino", "kind", "sense", "color", "color/colour"),
     _e("hato", "kind", "abstract", "way", "way/manner"),
     _e("qeso", "kind", "abstract", "question", "question"),
     _e("toso", "kind", "matter", "tree", "tree"),
@@ -326,10 +329,10 @@ KINDS: tuple[Entry, ...] = (
 
 
 def agent_form(event: str) -> str | None:
-    """seni → seno, if that slot is not already a root. None if blocked."""
+    """seni → senu. Derived kinds use -u, never the primitive -o space."""
     if len(event) < 2 or not event.endswith("i"):
         return None
-    return event[:-1] + "o"
+    return event[:-1] + "u"
 
 
 def _agent_english(e: Entry) -> str:
@@ -347,8 +350,13 @@ def _derived_agent_kinds(reserved: set[str]) -> tuple[Entry, ...]:
     taken = set(reserved)
     for e in EVENTS:
         form = agent_form(e.form)
-        if not form or form in taken:
-            continue
+        if not form:
+            raise RuntimeError(f"cannot derive agent kind from {e.form}")
+        if form in taken:
+            raise RuntimeError(
+                f"derived {form} from {e.form} collides with a primitive — "
+                f"type vowels are supposed to make this impossible"
+            )
         er = _agent_english(e)
         out.append(
             _e(
@@ -528,9 +536,9 @@ def english_to_root() -> dict[str, Entry]:
 
 ENGLISH_MAP = english_to_root()
 
-# event form → packed agent kind (seni → seno)
+# event form → packed agent kind (seni → senu)
 AGENT_UNPACK: dict[str, str] = {
-    e.form: e.form[:-1] + "i" for e in DERIVED_AGENTS if e.form.endswith("o")
+    e.form: e.form[:-1] + "i" for e in DERIVED_AGENTS if e.form.endswith("u")
 }
 AGENT_PACK: dict[str, str] = {v: k for k, v in AGENT_UNPACK.items()}
 
@@ -664,8 +672,13 @@ def validate_lexicon() -> list[str]:
     for e in LEXICON.values():
         if e.kind == "evt" and not e.form.endswith("i"):
             problems.append(f"event {e.form} should end in -i")
-        if e.kind == "kind" and not e.form.endswith("o"):
-            problems.append(f"kind {e.form} should end in -o")
+        if e.kind == "kind":
+            derived = {d.form for d in DERIVED_AGENTS}
+            if e.form in derived:
+                if not e.form.endswith("u"):
+                    problems.append(f"derived kind {e.form} should end in -u")
+            elif not e.form.endswith("o"):
+                problems.append(f"primitive kind {e.form} should end in -o")
         if e.kind == "qual" and not e.form.endswith("a"):
             problems.append(f"quality {e.form} should end in -a")
     # disjoint closed classes

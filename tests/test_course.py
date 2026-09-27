@@ -59,7 +59,7 @@ class PrimerTests(unittest.TestCase):
         self.assertTrue(r2["correct"], r2)
 
     def test_reader_short(self):
-        for form in ("( seno )", "( agto seni )", "( seno ind )"):
+        for form in ("( senu )", "( agto seni )", "( senu ind )"):
             r = check_exercise("12-reader", form)
             self.assertTrue(r.get("correct"), (form, r))
 

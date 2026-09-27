@@ -18,7 +18,10 @@ class LexiconTests(unittest.TestCase):
             if e.kind == "evt":
                 self.assertTrue(e.form.endswith("i"), e.form)
             if e.kind == "kind":
-                self.assertTrue(e.form.endswith("o"), e.form)
+                self.assertTrue(
+                    e.form.endswith("o") or e.form.endswith("u"),
+                    e.form,
+                )
             if e.kind == "qual":
                 self.assertTrue(e.form.endswith("a"), e.form)
 
@@ -141,21 +144,31 @@ class DerivationTests(unittest.TestCase):
     def test_reader_packed(self):
         from nex.lexicon import AGENT_PACK, lookup
 
-        self.assertEqual(AGENT_PACK.get("seni"), "seno")
-        self.assertEqual(lookup("seno").gloss, "reader")
+        self.assertEqual(AGENT_PACK.get("seni"), "senu")
+        self.assertEqual(lookup("senu").gloss, "reader")
 
-    def test_remember_does_not_steal_color(self):
+    def test_every_event_has_an_agent_noun(self):
+        from nex.lexicon import AGENT_PACK, EVENTS, lookup
+
+        for e in EVENTS:
+            packed = AGENT_PACK.get(e.form)
+            self.assertIsNotNone(packed, e.form)
+            self.assertTrue(packed.endswith("u"), packed)
+            self.assertEqual(lookup(packed).kind, "kind")
+
+    def test_remember_does_not_collide_with_color(self):
         from nex.lexicon import AGENT_PACK, lookup
 
-        self.assertNotIn("koli", AGENT_PACK)
-        self.assertEqual(lookup("kolo").gloss, "color")
+        self.assertEqual(AGENT_PACK.get("koli"), "kolu")
+        self.assertEqual(lookup("tino").gloss, "color")
+        self.assertNotEqual(AGENT_PACK.get("koli"), "tino")
 
     def test_agto_parses_and_packs(self):
         from nex.serialize import pack_derived
 
         p = parse("( agto seni )")
         packed = pack_derived(p)
-        self.assertEqual(packed.statements[0].frame.head, "seno")
+        self.assertEqual(packed.statements[0].frame.head, "senu")
 
     def test_reader_of_books(self):
         p = parse("( agto seni thm ( mabo ) )")

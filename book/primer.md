@@ -919,7 +919,7 @@ are three rungs. Climb only as high as you need.
 | happiness | `( koso ( hapa ) )` | 5 |
 | unhappiness | `( koso ( hapa not ) )` | 6 |
 | a reader | `( agto seni )` | 4 |
-| a reader | `seno` | 1 |
+| a reader | `senu` | 1 |
 | what is read | `( thmo seni )` | 4 |
 | a place for reading | `( plao seni )` | 4 |
 
@@ -927,17 +927,26 @@ are three rungs. Climb only as high as you need.
 undergoer, `inso` the tool, `plao` the place. They are operators, so the
 event can sit as a bare atom: `( agto seni )`, not a relative clause.
 
-When the *-er* noun is common, Nex also **packs** it: flip the type vowel
-`seni` → `seno`. Same stem, one token, still obviously “the read-person.”
-A model that has seen `seni` is halfway to `seno`. You only get the packed
-form when that *-o* slot is free (`koli` “remember” cannot become `kolo`,
-because `kolo` already means *color* — then you stay on `( agto koli )`).
+When you want one token, **pack** by changing the type vowel, not by
+stealing another word’s shape:
+
+| type | ending | example |
+| --- | --- | --- |
+| event | `-i` | `seni` read, `koli` remember |
+| primitive kind | `-o` | `mabo` book, `tino` color |
+| quality | `-a` | `ruga` red, `kola` cold |
+| derived doer | `-u` | `senu` reader, `kolu` rememberer |
+
+`seni` → `senu`, always. `koli` → `kolu`, always. There is no “unless that
+slot is taken.” Derived nouns live in `-u`, primitive kinds live in `-o`,
+so they cannot collide. If a future root would break that, the lexicon is
+wrong — you rename the root, you do not add an exception.
 
 **Rung 2 — an extra slot on the derived kind.** Still short.
 
 ```
 ( agto seni thm ( mabo ) )     a reader of books
-( seno thm ( mabo ) )          the same, packed
+( senu thm ( mabo ) )          the same, packed
 ```
 
 **Rung 3 — a relative clause.** Use this when you need a full extra event,
@@ -969,7 +978,7 @@ asrt ( veli must agt spk gol ( meso def ) ) .
 When you need a word you do not have, do this in order:
 
 1. Is it a feature? (`not`, `more`, `pl`, `past`…)
-2. Is it a derivation? (`agto`, `thmo`, `koso`, packed `seno`…)
+2. Is it a derivation? (`agto`, `thmo`, `koso`, packed `senu`…)
 3. Is it a role on that derived kind? (`thm`, `loc`…)
 4. Only then a `rel` clause — a definition, not a lexeme.
 5. Only then mint a root, with the right ending.
@@ -990,7 +999,7 @@ Do not pay fourteen tokens for *-er*.
 -->
 
 <!--ex
-{"id": "12-reader", "type": "match", "prompt": "Write Nex for “a reader” (the person, not a sentence). Prefer the short form.", "hint": "Packed kind seno, or ( agto seni ).", "accept": ["( seno )", "( seno ind )", "( agto seni )", "( agto seni ind )"]}
+{"id": "12-reader", "type": "match", "prompt": "Write Nex for “a reader” (the person, not a sentence). Prefer the short form.", "hint": "Packed kind senu, or ( agto seni ).", "accept": ["( senu )", "( senu ind )", "( agto seni )", "( agto seni ind )"]}
 -->
 
 <!--ex

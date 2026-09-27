@@ -110,10 +110,13 @@ Embedding matrix is small; parameters go to the residual stream.
 
 **Derivation, then packing.** A relative clause is a definition, not a
 word. English *-er* is `( agto seni )` (four tokens) or the packed kind
-`seno` (one token, same stem, type vowel flipped). The long form
+`senu` (one token). Packing flips the type vowel into a *reserved*
+namespace: events `-i`, primitive kinds `-o`, qualities `-a`, derived
+doers `-u`. `koli` (remember) becomes `kolu`, and never has to fight
+`tino` (color). If two roots would collide, the lexicon is wrong — you
+do not add an exception. The long form
 `( pamo rel ( seni hab agt slf thm ( mabo ) ) )` stays available when you
-actually need a clause. Models should not spend a dozen tokens on a
-nominalizer.
+actually need a clause.
 
 ## What Nex is not
 
