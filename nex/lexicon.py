@@ -10,8 +10,8 @@ land on a primitive kind:
     qualities           end in -a
     derived agent kinds end in -u   (seni → senu, never seno)
 
-First consonant loosely marks semantic field so similar meanings share
-form — a featural hint for character-aware models and for embedding init.
+A stem is unique among primitives. Shared stems are derivation, never
+coincidence — otherwise type vowels invent fake families (remember/cold).
 """
 
 from __future__ import annotations
@@ -207,7 +207,7 @@ EVENTS: tuple[Entry, ...] = (
     # perception / speech  s-
     _e("vidi", "evt", "sense", "see", "see/saw/seen/seeing/look/looked", "exp thm ins"),
     _e("suli", "evt", "sense", "hear", "hear/heard/hearing/listen", "exp thm"),
-    _e("somi", "evt", "sense", "smell", "smell/smelled/smelling", "exp thm"),
+    _e("nusi", "evt", "sense", "smell", "smell/smelled/smelling", "exp thm"),
     _e("sati", "evt", "sense", "taste", "taste/tasted", "exp thm"),
     _e("suci", "evt", "sense", "touch", "touch/touched/touching", "agt thm"),
     _e("saki", "evt", "speech", "say", "say/said/saying/tell/told", "agt cnt rec"),
@@ -381,7 +381,7 @@ QUALS: tuple[Entry, ...] = (
     _e("hapa", "qual", "value", "happy", "happy/glad"),
     _e("sada", "qual", "value", "sad", "sad/unhappy"),
     _e("trua", "qual", "value", "true", "true/real"),
-    _e("fala", "qual", "value", "false", "false/untrue"),
+    _e("erza", "qual", "value", "false", "false/untrue"),
     _e("biga", "qual", "phys", "big", "big/large/great"),
     _e("soma", "qual", "phys", "small", "small/little/tiny"),
     _e("nova", "qual", "phys", "new", "new"),
@@ -393,7 +393,7 @@ QUALS: tuple[Entry, ...] = (
     _e("blaka", "qual", "phys", "black", "black"),
     _e("yela", "qual", "phys", "yellow", "yellow"),
     _e("hota", "qual", "phys", "hot", "hot/warm"),
-    _e("kola", "qual", "phys", "cold", "cold/cool"),
+    _e("niva", "qual", "phys", "cold", "cold/cool"),
     _e("fasta", "qual", "phys", "fast", "fast/quick/quickly"),
     _e("slowa", "qual", "phys", "slow", "slow/slowly"),
     _e("hara", "qual", "phys", "hard", "hard/difficult"),
@@ -417,7 +417,7 @@ QUALS: tuple[Entry, ...] = (
     _e("reda", "qual", "value", "ready", "ready"),
     _e("fria", "qual", "value", "free", "free"),
     _e("equa", "qual", "rel", "equal", "equal"),
-    _e("mana", "qual", "quant", "many", "many/much/lots"),
+    _e("multa", "qual", "quant", "many", "many/much/lots"),
     _e("fewa", "qual", "quant", "few", "few"),
     _e("sura", "qual", "value", "sure", "sure/certain"),
     _e("northa", "qual", "space", "north", "north/northern"),
@@ -681,6 +681,26 @@ def validate_lexicon() -> list[str]:
                 problems.append(f"primitive kind {e.form} should end in -o")
         if e.kind == "qual" and not e.form.endswith("a"):
             problems.append(f"quality {e.form} should end in -a")
+    # Primitive open-class stems must be unique. Sharing a stem is derivation,
+    # not a coincidence (seni/senu, reda/redi). Fake families are banned.
+    stems: dict[str, list[Entry]] = {}
+    derived = {d.form for d in DERIVED_AGENTS}
+    allowed_families = {
+        "red": "ready",  # reda (quality) / redi (be-ready)
+    }
+    for e in LEXICON.values():
+        if e.kind not in {"evt", "kind", "qual"}:
+            continue
+        if e.form in derived:
+            continue
+        stems.setdefault(e.form[:-1], []).append(e)
+    for stem, items in stems.items():
+        if len(items) < 2:
+            continue
+        if stem in allowed_families:
+            continue
+        glosses = ", ".join(f"{x.form}={x.gloss}" for x in items)
+        problems.append(f"unrelated roots share stem {stem!r}: {glosses}")
     # disjoint closed classes
     buckets: dict[str, str] = {}
     for e in (*ILLOCUTIONS, *ROLES, *FEATURES, *OPERATORS, *DEICTICS):

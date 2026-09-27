@@ -40,8 +40,11 @@ period in English. The other four, which you will meet later:
 | `exch` | exclaiming |
 
 Inside the parentheses the **first atom is the head**. Everything after it
-hangs off that head. A head that is an event ends in **-i**. A thing ends in
-**-o**. A quality ends in **-a**. You can see the type without a dictionary.
+hangs off that head. Endings mark class, like a part-of-speech badge, not
+like English *-ed*. An event ends in **-i**, a thing in **-o**, a quality in
+**-a**. Two unrelated words are never allowed to share a stem (`koli`
+remember does not get to look like `kola` anything). If they share a stem,
+they are family: `seni` read / `senu` reader.
 
 ```
 ( vidi … )     ← an event: seeing
@@ -934,7 +937,7 @@ stealing another word’s shape:
 | --- | --- | --- |
 | event | `-i` | `seni` read, `koli` remember |
 | primitive kind | `-o` | `mabo` book, `tino` color |
-| quality | `-a` | `ruga` red, `kola` cold |
+| quality | `-a` | `ruga` red, `niva` cold |
 | derived doer | `-u` | `senu` reader, `kolu` rememberer |
 
 `seni` → `senu`, always. `koli` → `kolu`, always. There is no “unless that
@@ -1118,7 +1121,7 @@ Keep this page. It is a kernel you can actually talk with.
 
 `guda` good · `bada` bad · `hapa` happy · `ruga` red · `blua` blue ·
 `biga` big · `soma` small · `fasta` fast · `nova` new · `olda` old ·
-`trua` true · `fala` false
+`trua` true · `erza` false
 
 **Features** — `not past now fut done ong hab may must def ind pl very more most`
 

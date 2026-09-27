@@ -61,7 +61,11 @@ The identity of the event is literal in the stream.
 4. **Morphology is syntax.** Features are atoms. There is no affix layer.
 5. **Reference is an index.** `$n` from 1.
 6. **Closed vocab, open world.** Names and numbers explode to letters/digits.
-7. **Form encodes type.** `-i` event, `-o` kind, `-a` quality. Ids pack kind and field.
+7. **Form encodes type; stems do not collide.** Events `-i`, primitive
+   kinds `-o`, qualities `-a`, derived doers `-u`. The ending is a badge
+   for humans and OOV fallback — the model already has type in syntax and
+   in the structured id. Two primitives must not share a stem: that would
+   look like a paradigm and lie.
 
 ## Why this shape and not Lojban / Ithkuil / ACE
 

@@ -13,6 +13,22 @@ class LexiconTests(unittest.TestCase):
     def test_valid(self):
         self.assertEqual(validate_lexicon(), [])
 
+    def test_no_fake_stem_families(self):
+        from collections import defaultdict
+        from nex.lexicon import DERIVED_AGENTS
+
+        derived = {d.form for d in DERIVED_AGENTS}
+        stems = defaultdict(list)
+        for e in LEXICON.values():
+            if e.kind not in {"evt", "kind", "qual"} or e.form in derived:
+                continue
+            stems[e.form[:-1]].append(e)
+        allowed = {"red"}
+        for stem, items in stems.items():
+            if stem in allowed:
+                continue
+            self.assertLessEqual(len(items), 1, [(x.form, x.gloss) for x in items])
+
     def test_type_endings(self):
         for e in LEXICON.values():
             if e.kind == "evt":
