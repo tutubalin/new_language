@@ -452,11 +452,11 @@ asrt ( hapa thm spk ) .
 *I am happy.*
 
 Nominalizing a quality — talking about *happiness* as a thing — wraps it in
-`koso` (a state):
+`koso` (a state). Nested frames are modifiers, so you can drop the word `mod`:
 
 ```
-( koso mod ( hapa ) )          happiness
-( koso mod ( hapa not ) )      unhappiness
+( koso ( hapa ) )              happiness
+( koso ( hapa not ) )          unhappiness
 ```
 
 That is why Nex does not have a word *unhappiness*. It would be a crime
@@ -488,7 +488,7 @@ asrt ( guda thm ( mabo def ) ) .
 -->
 
 <!--ex
-{"id": "06-unhappy", "type": "match", "prompt": "Write the Nex kind for “unhappiness” (not a whole sentence).", "hint": "koso wraps hapa not. Include the outer parentheses.", "accept": ["( koso mod ( hapa not ) )"]}
+{"id": "06-unhappy", "type": "match", "prompt": "Write the Nex kind for “unhappiness” (not a whole sentence).", "hint": "koso wraps ( hapa not ). Include the outer parentheses.", "accept": ["( koso ( hapa not ) )", "( koso mod ( hapa not ) )"]}
 -->
 
 <!--ex
@@ -907,18 +907,48 @@ asrt ( all ( pamo = $1 ) ( vidi exp $1 thm ( suno def ) ) ) .
 # 12. Growing words instead of minting them
 
 A closed kernel is useless if you cannot say new things. Nex grows by
-**wrapping**, not by inventing stems.
+**wrapping**, not by inventing stems. Wrapping has a length cost, so there
+are three rungs. Climb only as high as you need.
 
-| English | Nex |
-| --- | --- |
-| happiness | `( koso mod ( hapa ) )` |
-| unhappiness | `( koso mod ( hapa not ) )` |
-| goodness | `( koso mod ( guda ) )` |
-| the giving | `( evo mod ( doni ) )` |
-| a reader | `( pamo rel ( seni hab agt slf thm ( mabo ) ) )` |
-| faster | `( fasta more )` |
-| not red | `( ruga not )` |
-| can go | `( can ( veli agt $1 gol $2 ) )` |
+**Rung 1 — a feature or a derivational operator.** Two or three atoms.
+
+| English | Nex | tokens |
+| --- | --- | --- |
+| faster | `( fasta more )` | 4 |
+| not red | `( ruga not )` | 4 |
+| happiness | `( koso ( hapa ) )` | 5 |
+| unhappiness | `( koso ( hapa not ) )` | 6 |
+| a reader | `( agto seni )` | 4 |
+| a reader | `seno` | 1 |
+| what is read | `( thmo seni )` | 4 |
+| a place for reading | `( plao seni )` | 4 |
+
+`agto` is English *-er*: the person who does the event. `thmo` is the
+undergoer, `inso` the tool, `plao` the place. They are operators, so the
+event can sit as a bare atom: `( agto seni )`, not a relative clause.
+
+When the *-er* noun is common, Nex also **packs** it: flip the type vowel
+`seni` → `seno`. Same stem, one token, still obviously “the read-person.”
+A model that has seen `seni` is halfway to `seno`. You only get the packed
+form when that *-o* slot is free (`koli` “remember” cannot become `kolo`,
+because `kolo` already means *color* — then you stay on `( agto koli )`).
+
+**Rung 2 — an extra slot on the derived kind.** Still short.
+
+```
+( agto seni thm ( mabo ) )     a reader of books
+( seno thm ( mabo ) )          the same, packed
+```
+
+**Rung 3 — a relative clause.** Use this when you need a full extra event,
+not when you mean *-er*. This is legal, and too long for “reader”:
+
+```
+( pamo rel ( seni hab agt slf thm ( mabo ) ) )
+```
+
+That is “a person who habitually reads books,” which is a *definition*,
+not a word. Definitions are allowed. They should not be your default.
 
 `can` is an operator wrapping an event:
 
@@ -939,23 +969,32 @@ asrt ( veli must agt spk gol ( meso def ) ) .
 When you need a word you do not have, do this in order:
 
 1. Is it a feature? (`not`, `more`, `pl`, `past`…)
-2. Is it a role? (`cau`, `prp`, `ins`…)
-3. Can you wrap a quality in `koso`, or an event in `evo`?
-4. Can you write a `rel` clause?
-5. Only then, mint a root — and give it the right ending.
+2. Is it a derivation? (`agto`, `thmo`, `koso`, packed `seno`…)
+3. Is it a role on that derived kind? (`thm`, `loc`…)
+4. Only then a `rel` clause — a definition, not a lexeme.
+5. Only then mint a root, with the right ending.
 
-This is the same discipline you want in a model: compose, don’t memorize.
+This is the same discipline you want in a model: compose, then pack.
+Do not pay fourteen tokens for *-er*.
 
 <!--ex
 {"id": "12-can", "type": "match", "prompt": "Write Nex: I can eat the fish.", "hint": "can wraps pusi.", "accept": ["asrt ( can ( pusi agt spk thm ( pifo def ) ) ) ."]}
 -->
 
 <!--ex
-{"id": "12-koso", "type": "choice", "prompt": "The Nex for “goodness” is…", "choices": ["guda-ness", "( koso mod ( guda ) )", "( guda koso )"], "answer": 1}
+{"id": "12-koso", "type": "choice", "prompt": "The Nex for “goodness” is…", "choices": ["guda-ness", "( koso ( guda ) )", "( guda koso )"], "answer": 1}
 -->
 
 <!--ex
 {"id": "12-must", "type": "match", "prompt": "Write Nex: You must go to the house.", "hint": "veli must, or must as feature.", "accept": ["asrt ( veli must agt hrd gol ( meso def ) ) ."]}
+-->
+
+<!--ex
+{"id": "12-reader", "type": "match", "prompt": "Write Nex for “a reader” (the person, not a sentence). Prefer the short form.", "hint": "Packed kind seno, or ( agto seni ).", "accept": ["( seno )", "( seno ind )", "( agto seni )", "( agto seni ind )"]}
+-->
+
+<!--ex
+{"id": "12-long", "type": "choice", "prompt": "The relative clause ( pamo rel ( seni hab agt slf thm ( mabo ) ) ) is…", "choices": ["the normal word for “reader”", "a definition of a person who reads books, too long as a lexeme", "ungrammatical"], "answer": 1}
 -->
 
 # 13. A first reader

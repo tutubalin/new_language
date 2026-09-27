@@ -108,6 +108,13 @@ BPE cannot offer an equivalent bias.
 **Tiny kernel lexicon.** A few hundred atoms, composition for the rest.
 Embedding matrix is small; parameters go to the residual stream.
 
+**Derivation, then packing.** A relative clause is a definition, not a
+word. English *-er* is `( agto seni )` (four tokens) or the packed kind
+`seno` (one token, same stem, type vowel flipped). The long form
+`( pamo rel ( seni hab agt slf thm ( mabo ) ) )` stays available when you
+actually need a clause. Models should not spend a dozen tokens on a
+nominalizer.
+
 ## What Nex is not
 
 It is not a claim that humans should speak this. It is not a trained LLM.

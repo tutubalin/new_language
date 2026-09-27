@@ -129,6 +129,11 @@ OPERATORS: tuple[Entry, ...] = (
     _e("before", "op", "time", "before", "before/ago"),
     _e("after", "op", "time", "after", "after/later"),
     _e("dur", "op", "time", "duration", "for/lasting"),
+    # derivational operators — English -er/-ee without a relative clause
+    _e("agto", "op", "derive", "doer-of", "doer/-er", notes="( agto seni ) = reader"),
+    _e("thmo", "op", "derive", "undergoer-of", "patient/-ee", notes="( thmo seni ) = what is read"),
+    _e("inso", "op", "derive", "instrument-of", "tool-for", notes="( inso seni ) = reading-tool"),
+    _e("plao", "op", "derive", "place-of", "place-for", notes="( plao seni ) = reading-place"),
 )
 
 DEICTICS: tuple[Entry, ...] = (
@@ -319,6 +324,45 @@ KINDS: tuple[Entry, ...] = (
     _e("namo", "kind", "info", "name", "name"),
 )
 
+
+def agent_form(event: str) -> str | None:
+    """seni → seno, if that slot is not already a root. None if blocked."""
+    if len(event) < 2 or not event.endswith("i"):
+        return None
+    return event[:-1] + "o"
+
+
+def _agent_english(e: Entry) -> str:
+    w = e.english[0] if e.english else e.gloss
+    if w.endswith("e"):
+        return w + "r"
+    if w.endswith("y"):
+        return w[:-1] + "ier"
+    return w + "er"
+
+
+def _derived_agent_kinds(reserved: set[str]) -> tuple[Entry, ...]:
+    """One-token -er nouns. Same stem as the event; type vowel flips i→o."""
+    out: list[Entry] = []
+    taken = set(reserved)
+    for e in EVENTS:
+        form = agent_form(e.form)
+        if not form or form in taken:
+            continue
+        er = _agent_english(e)
+        out.append(
+            _e(
+                form,
+                "kind",
+                e.field,
+                er,
+                f"{er}/{e.gloss}-er",
+                notes=f"packed ( agto {e.form} )",
+            )
+        )
+        taken.add(form)
+    return tuple(out)
+
 # ---------------------------------------------------------------------------
 # Open class — qualities (-a)
 # ---------------------------------------------------------------------------
@@ -378,6 +422,25 @@ DIGITS = tuple(_e(str(i), "struct", "quant", str(i), str(i)) for i in range(10))
 LETTERS = tuple(_e(ch, "struct", "spell", ch, ch) for ch in "abcdefghijklmnopqrstuvwxyz")
 
 
+_RESERVED_FOR_DERIVED = {
+    e.form
+    for e in (
+        *ILLOCUTIONS,
+        *ROLES,
+        *FEATURES,
+        *OPERATORS,
+        *DEICTICS,
+        *STRUCT,
+        *EVENTS,
+        *KINDS,
+        *QUALS,
+        *DIGITS,
+        *LETTERS,
+    )
+}
+DERIVED_AGENTS: tuple[Entry, ...] = _derived_agent_kinds(_RESERVED_FOR_DERIVED)
+
+
 def _all_entries() -> list[Entry]:
     return [
         *ILLOCUTIONS,
@@ -388,6 +451,7 @@ def _all_entries() -> list[Entry]:
         *STRUCT,
         *EVENTS,
         *KINDS,
+        *DERIVED_AGENTS,
         *QUALS,
         *DIGITS,
         *LETTERS,
@@ -463,6 +527,12 @@ def english_to_root() -> dict[str, Entry]:
 
 
 ENGLISH_MAP = english_to_root()
+
+# event form → packed agent kind (seni → seno)
+AGENT_UNPACK: dict[str, str] = {
+    e.form: e.form[:-1] + "i" for e in DERIVED_AGENTS if e.form.endswith("o")
+}
+AGENT_PACK: dict[str, str] = {v: k for k, v in AGENT_UNPACK.items()}
 
 
 ROLE_ORDER = (
@@ -548,6 +618,7 @@ def field_hue(field: str) -> str:
         "phys": "#f2cc8f",
         "space": "#81b29a",
         "spell": "#9a8c7a",
+        "derive": "#81b29a",
     }.get(field, "#c4b8a8")
 
 

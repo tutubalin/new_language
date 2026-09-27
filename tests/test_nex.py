@@ -137,6 +137,31 @@ class CompareTests(unittest.TestCase):
         self.assertGreaterEqual(len(rows), 8)
 
 
+class DerivationTests(unittest.TestCase):
+    def test_reader_packed(self):
+        from nex.lexicon import AGENT_PACK, lookup
+
+        self.assertEqual(AGENT_PACK.get("seni"), "seno")
+        self.assertEqual(lookup("seno").gloss, "reader")
+
+    def test_remember_does_not_steal_color(self):
+        from nex.lexicon import AGENT_PACK, lookup
+
+        self.assertNotIn("koli", AGENT_PACK)
+        self.assertEqual(lookup("kolo").gloss, "color")
+
+    def test_agto_parses_and_packs(self):
+        from nex.serialize import pack_derived
+
+        p = parse("( agto seni )")
+        packed = pack_derived(p)
+        self.assertEqual(packed.statements[0].frame.head, "seno")
+
+    def test_reader_of_books(self):
+        p = parse("( agto seni thm ( mabo ) )")
+        self.assertEqual(p.statements[0].frame.head, "agto")
+
+
 class CanonicalTests(unittest.TestCase):
     def test_role_order_stable(self):
         a = parse("( doni rec hrd agt spk thm ( mabo ) )")

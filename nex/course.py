@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .ast_nodes import Atom, Frame, Node, Num, Program, Ref, Spell
 from .parser import ParseError, parse
-from .serialize import serialize
+from .serialize import pack_derived, serialize
 
 PRIMER = Path(__file__).resolve().parent.parent / "book" / "primer.md"
 
@@ -176,6 +176,8 @@ def programs_match(got: Program, want: Program, accepted_src: str) -> tuple[bool
     ignore_illoc = not re.match(r"^(asrt|ask|cmd|opt|exch)\b", src)
     if not ignore_illoc and len(got.statements) != len(want.statements):
         return False, f"Expected {len(want.statements)} sentence(s)."
+    got = pack_derived(got)  # type: ignore
+    want = pack_derived(want)  # type: ignore
     if ignore_illoc:
         if not got.statements:
             return False, "Empty."

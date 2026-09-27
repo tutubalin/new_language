@@ -55,6 +55,13 @@ class PrimerTests(unittest.TestCase):
     def test_unhappy_frame(self):
         r = check_exercise("06-unhappy", "( koso mod ( hapa not ) )")
         self.assertTrue(r["correct"], r)
+        r2 = check_exercise("06-unhappy", "( koso ( hapa not ) )")
+        self.assertTrue(r2["correct"], r2)
+
+    def test_reader_short(self):
+        for form in ("( seno )", "( agto seni )", "( seno ind )"):
+            r = check_exercise("12-reader", form)
+            self.assertTrue(r.get("correct"), (form, r))
 
 
 if __name__ == "__main__":

@@ -5,8 +5,29 @@ from __future__ import annotations
 import re
 
 from .ast_nodes import Atom, Frame, Node, Num, Program, Ref, Spell, Statement
-from .lexicon import LEXICON, is_operator, lookup
+from .lexicon import AGENT_PACK, AGENT_UNPACK, LEXICON, is_operator, lookup
 from .parser import parse
+
+
+def pack_derived(node: Program | Statement | Node) -> Program | Statement | Node:
+    """Collapse ( agto seni ) → ( seno ) when the packed kind exists."""
+    if isinstance(node, Program):
+        return Program([pack_derived(s) for s in node.statements])  # type: ignore
+    if isinstance(node, Statement):
+        return Statement(node.illoc, pack_derived(node.frame))  # type: ignore
+    if not isinstance(node, Frame):
+        return node
+    slots = [(r, pack_derived(n) if isinstance(n, Frame) else n) for r, n in node.slots]
+    if node.head == "agto":
+        bares = [(r, n) for r, n in slots if r is None]
+        rest = [(r, n) for r, n in slots if r is not None]
+        if len(bares) == 1 and isinstance(bares[0][1], Atom):
+            packed = AGENT_PACK.get(bares[0][1].form)
+            if packed:
+                return Frame(packed, list(node.features), node.binding, rest)
+    if node.head in AGENT_UNPACK:
+        return Frame(node.head, list(node.features), node.binding, slots)
+    return Frame(node.head, list(node.features), node.binding, slots)
 
 
 def serialize(node: Program | Statement | Node, pretty: bool = True) -> str:
@@ -282,6 +303,18 @@ def _gloss_frame(frame: Frame) -> str:
         return "0"
     if frame.head == "spell":
         return "".join(_gloss_node(n) for _, n in frame.slots)
+    if frame.head == "agto":
+        args = [_gloss_node(n) for _, n in frame.slots]
+        return (args[0] + "-er") if args else "doer"
+    if frame.head == "thmo":
+        args = [_gloss_node(n) for _, n in frame.slots]
+        return (args[0] + "-ee") if args else "undergoer"
+    if frame.head == "inso":
+        args = [_gloss_node(n) for _, n in frame.slots]
+        return "tool-for " + " ".join(args)
+    if frame.head == "plao":
+        args = [_gloss_node(n) for _, n in frame.slots]
+        return "place-of " + " ".join(args)
     if frame.head in {"qnt", "dur", "before", "after", "can", "cause", "same", "sim"}:
         args = [_gloss_node(n) for _, n in frame.slots]
         return f"{_word(frame.head)} " + " ".join(args)

@@ -174,8 +174,9 @@ def morphology_table() -> list[dict]:
     rows = [
         ("happy", "( hapa )", "hapa"),
         ("unhappy", "( hapa not )", "hapa + not"),
-        ("happiness", "( koso mod ( hapa ) )", "koso + hapa"),
-        ("unhappiness", "( koso mod ( hapa not ) )", "koso + hapa + not"),
+        ("happiness", "( koso ( hapa ) )", "koso + hapa"),
+        ("unhappiness", "( koso ( hapa not ) )", "koso + hapa + not"),
+        ("reader", "( seno )", "seno ← agto + seni"),
         ("happier", "( hapa more )", "hapa + more"),
         ("happiest", "( hapa most )", "hapa + most"),
         ("go", "( veli )", "veli"),
