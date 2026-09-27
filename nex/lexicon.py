@@ -523,14 +523,36 @@ def is_deictic(form: str) -> bool:
 
 
 def english_to_root() -> dict[str, Entry]:
+    """Map English lemmas to Nex roots.
+
+    Role glosses like theme/patient/what must not steal the word *what*.
+    Content words (events, kinds, qualities, deictics) win over role/feature
+    documentation strings. Tense feature `now` is not English *now*.
+    """
     m: dict[str, Entry] = {}
+    rank = {
+        "evt": 0,
+        "kind": 0,
+        "qual": 0,
+        "deictic": 1,
+        "op": 2,
+        "feat": 3,
+        "illoc": 4,
+        "role": 5,
+        "struct": 6,
+    }
     for e in LEXICON.values():
         if e.kind == "struct":
             continue
+        if e.kind == "feat" and e.form == "now":
+            continue
         for w in e.english:
             key = w.lower()
-            # first mapping wins — closed class is inserted first
-            m.setdefault(key, e)
+            if key in {"what", "who", "where", "when", "why", "how"} and e.kind == "role":
+                continue
+            prev = m.get(key)
+            if prev is None or rank.get(e.kind, 9) < rank.get(prev.kind, 9):
+                m[key] = e
     return m
 
 

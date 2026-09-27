@@ -141,6 +141,18 @@ class EnglishTests(unittest.TestCase):
         with self.assertRaises(TranslateError):
             from_english("Maria yeeted the book.")
 
+    def test_what_time_is_it_now(self):
+        r = from_english("What time is it now?")
+        p = parse(r["nex"])
+        self.assertEqual(p.statements[0].illoc, "ask")
+        f = p.statements[0].frame
+        self.assertEqual(f.head, "toko")
+        self.assertIsNotNone(f.arg("tmp"))
+
+    def test_what_is_the_time(self):
+        r = from_english("What is the time?")
+        self.assertEqual(parse(r["nex"]).statements[0].frame.head, "toko")
+
 
 class CompareTests(unittest.TestCase):
     def test_unhappiness_splits_in_english(self):

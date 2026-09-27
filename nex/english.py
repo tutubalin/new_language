@@ -225,6 +225,7 @@ class TranslateError(Exception):
 
 def tokenize_en(text: str) -> list[str]:
     text = text.strip()
+    text = re.sub(r"\b(what|where|who|how|when|it)'s\b", r"\1 is", text, flags=re.I)
     text = re.sub(r"n't", " n't", text)
     text = re.sub(r"([.,!?;:()\"])", r" \1 ", text)
     return [t for t in text.split() if t]
@@ -420,14 +421,23 @@ def from_english(text: str) -> dict:
             pass
 
     c = _C(toks)
+    idiom = _try_idiom(c)
+    if idiom is not None:
+        prog = Program([Statement(illoc if illoc != "asrt" else "ask", idiom)])
+        return {
+            "nex": serialize(prog.canonical(), pretty=True),
+            "ast": prog.canonical().to_dict(),
+            "illoc": prog.statements[0].illoc,
+            "notes": _notes_for(text, prog),
+        }
     # split on because / if / and at top level
     frame = _top(c)
     c.skip_punct()
+    while c.peek() and c.peek().norm in {"now", "today", "yesterday", "tomorrow"}:
+        frame.slots.append(("tmp", _time_word(c.get().norm)))
     if c.peek() is not None and c.peek().norm not in {".", "?", "!"}:
-        # leftover words
         leftover = " ".join(t.raw for t in c.toks[c.i :])
         if leftover.strip():
-            # try to ignore trailing leftovers that are function words
             if not all(t.tag in {"PUNCT", "FN"} and t.norm in {"please"} for t in c.toks[c.i :]):
                 raise TranslateError(
                     f"could not consume {leftover!r}. "
@@ -441,6 +451,28 @@ def from_english(text: str) -> dict:
         "illoc": illoc,
         "notes": _notes_for(text, prog),
     }
+
+
+def _try_idiom(c: _C) -> Frame | None:
+    """Clock-time and a few other questions the clause parser should not guess at."""
+    norms = [t.norm for t in c.toks]
+    joined = " ".join(norms)
+
+    def done(frame: Frame) -> Frame:
+        c.i = len(c.toks)
+        return frame
+
+    if re.fullmatch(r"what time is( it)?( now| today)?", joined):
+        return done(Frame("toko", binding=_fresh(c), slots=[("tmp", Atom("nowt"))]))
+    if re.fullmatch(r"what is the time( now)?", joined):
+        return done(Frame("toko", binding=_fresh(c), slots=[("tmp", Atom("nowt"))]))
+    if re.fullmatch(r"what day is( it)?( today| now)?", joined):
+        return done(Frame("dieno", binding=_fresh(c), slots=[("tmp", Atom("nowt"))]))
+    if re.fullmatch(r"when is it( now)?", joined):
+        return done(Frame("toko", binding=_fresh(c), slots=[("tmp", Atom("nowt"))]))
+    if joined in {"how are you", "how do you feel"}:
+        return done(Frame("hapa", slots=[("thm", Atom("hrd"))]))
+    return None
 
 
 def _top(c: _C) -> Frame:
