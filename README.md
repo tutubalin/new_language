@@ -22,6 +22,15 @@ That is not a gloss of “Maria gave John the red book.” It *is* the sentence:
 one predicate, named roles, a bound speaker-independent index, a modifier
 that is itself a frame. There is no other parse.
 
+## Learn it from zero
+
+**[First Nex](book/primer.md)** is a sixteen-chapter primer: atoms, roles,
+names, time, modifiers, bindings, questions, cause, quantifiers, and a
+short reader. Every drill is marked by the real parser.
+
+- Read on GitHub: [`book/primer.md`](book/primer.md)
+- Interactive (parser checks your answers): run `python server.py` and open `/book.html`
+
 ## Why a new language
 
 | English in a transformer | Nex |
@@ -56,25 +65,27 @@ be initialized with a real inductive bias.
 python server.py
 ```
 
-Then open the URL it prints. The studio translates a kernel subset of
-English, parses Nex, shows the unique tree, and compares BPE against Nex
-atoms.
+Then open the URL it prints. Learn at `/book.html`. The studio at `/`
+translates a kernel subset of English, parses Nex, shows the unique tree,
+and compares BPE against Nex atoms.
 
 ```bash
 PYTHONPATH=. python -m nex parse 'asrt ( vidi past exp spk thm ( pugo def ) ) .'
 PYTHONPATH=. python -m nex en 'Maria gave John the red book.'
 PYTHONPATH=. python -m nex encode 'asrt ( qnt ( dieno ) 12345 ) .'
-PYTHONPATH=. python -m unittest tests.test_nex
+PYTHONPATH=. python -m unittest tests.test_nex tests.test_course
 ```
 
 ## Layout
 
 ```
+book/primer.md the textbook (First Nex)
+web/book.html  interactive reader with parser-checked drills
 nex/           language: lexicon, parser, encoder, English bridge
 web/           playground
 spec/DESIGN.md why these choices
 examples/      sample texts
-tests/         round-trip, disambiguation, tokenization
+tests/         round-trip, disambiguation, tokenization, drills
 ```
 
 ## A note on ambition

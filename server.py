@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from nex.compare import SHOWCASE, compare_tokenization, morphology_table
+from nex.course import check_exercise, public_course
 from nex.english import TranslateError, from_english
 from nex.ids import decode_id_fields, id_layout, token_id
 from nex.lexicon import LEXICON, lexicon_public, validate_lexicon
@@ -72,6 +73,8 @@ class Handler(SimpleHTTPRequestHandler):
             return _json(self, 200, morphology_table())
         if path == "/api/ids":
             return _json(self, 200, id_layout())
+        if path == "/api/course":
+            return _json(self, 200, public_course())
         if path == "/api/health":
             return _json(
                 self,
@@ -102,6 +105,16 @@ class Handler(SimpleHTTPRequestHandler):
                     self,
                     200,
                     compare_tokenization(body.get("english", ""), body.get("nex") or None),
+                )
+            if path == "/api/check":
+                return _json(
+                    self,
+                    200,
+                    check_exercise(
+                        body.get("id", ""),
+                        text=body.get("text", ""),
+                        choice=body.get("choice"),
+                    ),
                 )
             if path == "/api/id":
                 form = body.get("form", "")
