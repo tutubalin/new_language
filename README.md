@@ -30,6 +30,7 @@ short reader. Every drill is marked by the real parser.
 
 - Read on GitHub: [`book/primer.md`](book/primer.md)
 - Interactive (parser checks your answers): run `python server.py` and open `/book.html`
+- For models (English ↔ Nex): [`spec/NEX_LLM.md`](spec/NEX_LLM.md) — complete, formal, short
 
 ## Why a new language
 
