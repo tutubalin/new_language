@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nex — a language for models that think in tokens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="#top">Nex <b>/</b> nx</a>
+      <a href="#studio">Studio</a>
+      <a href="#why">Why</a>
+      <a href="#grammar">Grammar</a>
+      <a href="#lexicon">Lexicon</a>
+      <a href="#script">Script</a>
+      <span class="spacer"></span>
+      <a href="#grammar">Spec</a>
+    </div>
+  </nav>
+
+  <header class="hero wrap" id="top">
+    <div class="kicker">A constructed language · designed against the transformer</div>
+    <h1>English grew in mouths.<br /><em>Nex grew in attention.</em></h1>
+    <p class="lede">
+      Natural languages are superb for humans and quietly hostile to large language models:
+      they shatter at token boundaries, hide who did what, and let one string mean two trees.
+      Nex is a token-native language — one atom, one meaning, one parse — built for
+      next-token prediction, embedding geometry, and systematic generalization.
+    </p>
+    <div class="row">
+      <a class="btn" href="#studio">Write something</a>
+      <a class="btn ghost" href="#why">See the damage English does</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>~300</b><span>kernel tokens, not 50k BPE shards</span></div>
+      <div class="stat"><b>1</b><span>parse per string (PEG, not hope)</span></div>
+      <div class="stat"><b>0</b><span>irregular verbs, genders, cases</span></div>
+      <div class="stat"><b>$n</b><span>indexed reference, not “he”</span></div>
+    </div>
+    <div class="laws">
+      <div class="law"><n>01</n><h3>Token = meaning</h3><p>The writing system is the vocabulary. Nothing splits a root. Nothing fuses two meanings.</p></div>
+      <div class="law"><n>02</n><h3>One string, one tree</h3><p>The grammar is deterministic. If you can write it, a model can recover the unique graph.</p></div>
+      <div class="law"><n>03</n><h3>Roles are tokens</h3><p><code>agt</code> is always agent. Attention can learn one hook instead of word-order heuristics.</p></div>
+      <div class="law"><n>04</n><h3>Morphology is syntax</h3><p>There is no second system of affixes. Past is <code>past</code>. Plural is <code>pl</code>. Not is <code>not</code>.</p></div>
+      <div class="law"><n>05</n><h3>Reference is bound</h3><p>No gendered pronouns. First mention binds <code>$1</code>. Later mentions are the same id.</p></div>
+      <div class="law"><n>06</n><h3>Open class, closed vocab</h3><p>Names and numbers explode to letters and digits. The model never meets an unknown id.</p></div>
+      <div class="law"><n>07</n><h3>Form encodes type</h3><p>Events end in <em>-i</em>, kinds in <em>-o</em>, qualities in <em>-a</em>. Token ids pack type and field in their bits.</p></div>
+    </div>
+  </header>
+
+  <section id="studio">
+    <div class="wrap">
+      <h2>Studio</h2>
+      <p class="sub">Type English for a kernel subset, or write Nex directly. Either way you get a unique tree, a gloss, and the model token stream.</p>
+      <div class="grid-2">
+        <div class="card dark">
+          <h3>English</h3>
+          <textarea id="en-in" rows="6">Maria gave John the red book yesterday.</textarea>
+          <div class="row">
+            <button id="btn-en">Translate to Nex</button>
+            <button class="ghost" id="btn-ex">Load an example</button>
+          </div>
+          <div id="en-err" class="err"></div>
+          <div id="en-notes"></div>
+          <div class="ex-list" id="ex-list"></div>
+        </div>
+        <div class="card dark">
+          <h3>Nex</h3>
+          <textarea id="nx-in" rows="6"></textarea>
+          <div class="row">
+            <button id="btn-parse">Parse</button>
+            <button class="ghost" id="btn-canon">Canonicalize</button>
+          </div>
+          <div id="nx-err" class="err"></div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:18px">
+        <div class="card">
+          <h3>Gloss</h3>
+          <div class="gloss-out" id="gloss">—</div>
+          <h3 style="margin-top:18px">Model stream</h3>
+          <div class="chips" id="stream"></div>
+          <p id="stream-meta" style="color:#6b5e4e;font-size:13px"></p>
+        </div>
+        <div class="card">
+          <h3>Unique tree</h3>
+          <div class="tree" id="tree">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <h2>What is actually wrong with natural language for LLMs</h2>
+      <p class="sub">Not vibes. Failure modes that show up in tokenizers, attention, and compositional generalization papers.</p>
+
+      <h3 style="font-family:var(--sans)">1. Tokenization is not morphology</h3>
+      <p class="sub">BPE optimizes compression, not meaning. It will cut a stem in half and keep <em>Apple</em> / <em>apple</em> / <em>APPLE</em> as strangers. Nex refuses to have a writing system that is not the vocabulary.</p>
+      <div class="card dark">
+        <div class="lex-controls">
+          <input id="cmp-en" value="unhappiness" />
+          <input id="cmp-nx" value="( koso mod ( hapa not ) )" />
+          <button id="btn-cmp">Compare</button>
+        </div>
+        <div class="pair">
+          <div>
+            <div class="reading">English BPE (gpt2, or a faithful fallback)</div>
+            <div class="tok-en" id="cmp-en-toks"></div>
+            <p id="cmp-en-n" class="reading"></p>
+          </div>
+          <div>
+            <div class="reading">Nex model stream</div>
+            <div class="chips" id="cmp-nx-toks"></div>
+            <p id="cmp-nx-n" class="reading"></p>
+          </div>
+        </div>
+        <div id="morph-table"></div>
+      </div>
+
+      <h3 style="font-family:var(--sans);margin-top:48px">2. Ambiguity is a training-set tax</h3>
+      <p class="sub">Every English sentence the model sees is compatible with multiple graphs. It spends capacity on guessing. Nex makes the writer choose, so the reader never does.</p>
+      <div id="ambig"></div>
+
+      <h3 style="font-family:var(--sans);margin-top:48px">3. Transformers like explicit roles, short programs, and index hints</h3>
+      <div class="prose">
+        <p>
+          On SCAN, giving the attention mechanism abstract grammatical roles improves systematic generalization.
+          The RASP-generalization conjecture says a decoder-only transformer length-generalizes when the task is a short program over tokens — delimiters, indices, named slots.
+          Nex is that program: predicate first (so next-token prediction is constrained by selectional restrictions), named roles (so <code>agt</code> is an attention key), bindings (so coreference is equality, not a pronoun crossword), and matching parentheses (an induction-head classic).
+        </p>
+        <p>
+          Compositional languages are easier for both humans and nets to generalize in.
+          Irregular morphology is not “richness” to a model; it is a sparse lookup table. Nex has none.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="grammar">
+    <div class="wrap">
+      <h2>Grammar</h2>
+      <p class="sub">A statement is an illocution plus a frame. A frame is a head, optional features, optional binding, then role–argument pairs. Operators take bare arguments. That is the whole language.</p>
+      <div class="card dark">
+<pre style="white-space:pre-wrap;font-family:var(--mono);font-size:13.5px;line-height:1.55;margin:0">
+program     := statement+
+statement   := illocution frame "."
+illocution  := asrt | ask | cmd | opt | exch
+frame       := "(" head feature* binding? item* ")"
+head        := ATOM                         # event / kind / quality / operator
+feature     := not | past | now | fut | done | ong | hab
+             | may | must | seen | heard | said | inf
+             | def | ind | mass | sg | pl | very | more | most
+binding     := "=" $N
+item        := ROLE arg                     # agt thm rec loc tmp cau ...
+             | arg                          # only if head is an operator
+arg         := frame | $N | ATOM | NUMBER
+
+Roles are a closed list. Features are a closed list. Operators are a closed list.
+Open-class roots only appear as heads. Unknown heads still parse.
+Canonical order: features by slot, then roles by the role hierarchy, then modifiers.
+</pre>
+      </div>
+      <div class="prose">
+        <h3>A worked sentence</h3>
+        <p>English: <em>Maria gave John the red book yesterday because she liked him.</em></p>
+      </div>
+      <div class="pair">
+        <div class="en">The English string does not say whether <em>she</em> is Maria, whether <em>the red book</em> is unique, or whether yesterday modifies the giving or the liking.</div>
+        <div class="nx">asrt ( doni past done
+  agt ( pamo name maria = $1 )
+  thm ( mabo def mod ( ruga ) = $2 )
+  rec ( pamo name john = $3 )
+  tmp ( before nowt ( qnt ( dieno ) 1 ) )
+  cau ( fali past exp $1 thm $3 )
+) .</div>
+      </div>
+      <div class="prose">
+        <h3>Why predicate-first</h3>
+        <p>
+          Autoregressive models commit left to right. If the predicate comes first, every following
+          argument is generated under the constraint of that frame. That is the same reason
+          <code>doni(agt, thm, rec)</code> is easier to fill than a verb-final language in which
+          the model must keep three NPs in the air before it knows they are a giving.
+        </p>
+        <h3>Quantifier scope is tree structure</h3>
+        <p>
+          English <em>nobody saw every dog</em> has two scopes. Nex writes them as different trees:
+          <code>( none $1 ( all $2 ( vidi ... ) ) )</code> versus
+          <code>( all $2 ( none $1 ( vidi ... ) ) )</code>.
+          There is no “the model will figure it out.”
+        </p>
+        <h3>What we refused</h3>
+        <ul>
+          <li><strong>Lojban place structures</strong> — numbered <code>x1 x2 x3</code> are a memory test. Named roles are attention-friendly and omittable.</li>
+          <li><strong>Ithkuil density</strong> — packing twelve categories into one word is the opposite of token purity.</li>
+          <li><strong>Controlled English</strong> — still tokenized as English, still ambiguous at the boundary.</li>
+          <li><strong>AMR as a language</strong> — graphs without a canonical linearization are not a language a decoder can sample.</li>
+          <li><strong>A fantasy script as the primary form</strong> — extra bytes, worse BPE. Glyphs here are a visualization of type, not the encoding.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="lexicon">
+    <div class="wrap">
+      <h2>Lexicon</h2>
+      <p class="sub">Closed class is grammar. Open class is small on purpose: compose <code>not</code>, <code>koso</code>, <code>more</code> instead of minting <em>unhappiness</em> and <em>happier</em>. First consonant loosely marks field, so related roots start nearby — in spelling and in structured ids.</p>
+      <div class="lex-controls">
+        <input id="lex-q" placeholder="filter form, gloss, English…" />
+        <select id="lex-k">
+          <option value="">all kinds</option>
+          <option>illoc</option><option>role</option><option>feat</option>
+          <option>op</option><option>deictic</option>
+          <option>evt</option><option>kind</option><option>qual</option>
+        </select>
+      </div>
+      <div class="lex-grid" id="lex-grid"></div>
+    </div>
+  </section>
+
+  <section id="script">
+    <div class="wrap">
+      <h2>Featural glyphs &amp; structured ids</h2>
+      <p class="sub">Humans get a badge that shows type. Models get a 16-bit id <code>KKKK FFFF RRRRRRRR</code> — kind, semantic field, root. Embeddings can be initialized as a sum of those three lookups, so every transfer-event starts in the same region of space. BPE ids cannot do this: they are accidents of merge order.</p>
+      <div class="glyph-row" id="glyphs"></div>
+      <p class="reading" id="id-note"></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      Nex is an invented language for LLMs: kernel in Python, playground in this page.
+      Parse is unambiguous. Morphology is syntax. Reference is an index.
+    </div>
+  </footer>
+  <script src="/js/app.js"></script>
+</body>
+</html>

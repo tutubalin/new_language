@@ -1,0 +1,7 @@
+asrt ( doni past done
+  agt ( pamo name maria = $1 )
+  thm ( mabo def mod ( ruga ) = $2 )
+  rec ( pamo name john = $3 )
+  tmp ( before nowt ( qnt ( dieno ) 1 ) )
+  cau ( fali past exp $1 thm $3 )
+) .
