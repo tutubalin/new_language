@@ -23,7 +23,7 @@ class LexiconTests(unittest.TestCase):
             if e.kind not in {"evt", "kind", "qual"} or e.form in derived:
                 continue
             stems[e.form[:-1]].append(e)
-        allowed = {"red"}
+        allowed = {"red", "piv"}
         for stem, items in stems.items():
             if stem in allowed:
                 continue
@@ -58,6 +58,22 @@ class LexiconTests(unittest.TestCase):
 
 
 class ParserTests(unittest.TestCase):
+    def test_double_bind_rejected(self):
+        with self.assertRaises(ParseError):
+            parse("asrt ( pamo = $1 name earth = $2 ) .")
+
+    def test_earth_sentence(self):
+        src = (
+            "asrt ( and "
+            "( same ( plano def = $1 name earth ) "
+            "( plano def src ( suno def ) mod ( ord 3 ) ) ) "
+            "( one ( celo = $2 ) "
+            "( kuni exp unk thm ( havi agt $2 thm ( pivo ) ) ) ) "
+            "( same $1 $2 ) ) ."
+        )
+        p = parse(src)
+        self.assertEqual(p.statements[0].frame.head, "and")
+
     def test_give(self):
         src = (
             "asrt ( doni past done "

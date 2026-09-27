@@ -132,6 +132,12 @@ def _frame(lx: _Lexer) -> Frame:
             lx.get()
             break
         if t.text == "=":
+            if binding is not None:
+                raise ParseError(
+                    f"frame {head} already bound",
+                    t.index,
+                    t.text,
+                )
             lx.get()
             binding = _ref(lx).n
             continue

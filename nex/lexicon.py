@@ -128,6 +128,14 @@ OPERATORS: tuple[Entry, ...] = (
     _e("sim", "op", "rel", "similar", "similar/as-if"),
     _e("qnt", "op", "quant", "quantity", "quantity/amount"),
     _e("num", "op", "quant", "number", "number"),
+    _e(
+        "ord",
+        "op",
+        "quant",
+        "nth",
+        "nth/ordinal",
+        notes="( ord 3 ) = third; never num/qnt for rank",
+    ),
     _e("spell", "op", "struct", "spell", "spelled"),
     _e("before", "op", "time", "before", "before/ago"),
     _e("after", "op", "time", "after", "after/later"),
@@ -280,6 +288,10 @@ KINDS: tuple[Entry, ...] = (
     _e("puko", "kind", "life", "chicken", "chicken"),
     _e("suno", "kind", "life", "sun", "sun"),
     _e("wino", "kind", "life", "wind", "wind"),
+    _e("pivo", "kind", "life", "life", "life", notes="kind; event pivi, quality aliva"),
+    _e("celo", "kind", "sky", "sky-body", "celestial-body/astronomical-object"),
+    _e("plano", "kind", "sky", "planet", "planet"),
+    _e("stelo", "kind", "sky", "star", "star"),
     _e("moto", "kind", "matter", "thing", "thing/object/something/what"),
     _e("miko", "kind", "matter", "tool", "tool/device"),
     _e("mabo", "kind", "matter", "book", "book"),
@@ -287,7 +299,14 @@ KINDS: tuple[Entry, ...] = (
     _e("mowo", "kind", "matter", "water", "water"),
     _e("mafo", "kind", "matter", "fire", "fire"),
     _e("mazo", "kind", "matter", "air", "air"),
-    _e("mexo", "kind", "matter", "earth", "earth/ground/soil"),
+    _e(
+        "mexo",
+        "kind",
+        "matter",
+        "ground",
+        "ground/soil/earth",
+        notes="soil/ground, not planet Earth",
+    ),
     _e("meso", "kind", "matter", "house", "house/home/building"),
     _e("mako", "kind", "matter", "machine", "machine/computer"),
     _e("muko", "kind", "matter", "cloak", "cloak/coat/garment"),
@@ -643,6 +662,7 @@ def field_hue(field: str) -> str:
         "matter": "#b08968",
         "info": "#7b8cde",
         "place": "#81b29a",
+        "sky": "#7b8cde",
         "abstract": "#9a8c7a",
         "value": "#f2cc8f",
         "phys": "#f2cc8f",
@@ -709,6 +729,7 @@ def validate_lexicon() -> list[str]:
     derived = {d.form for d in DERIVED_AGENTS}
     allowed_families = {
         "red": "ready",  # reda (quality) / redi (be-ready)
+        "piv": "live",  # pivi (event live) / pivo (kind life)
     }
     for e in LEXICON.values():
         if e.kind not in {"evt", "kind", "qual"}:

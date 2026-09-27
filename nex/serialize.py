@@ -315,6 +315,9 @@ def _gloss_frame(frame: Frame) -> str:
     if frame.head == "plao":
         args = [_gloss_node(n) for _, n in frame.slots]
         return "place-of " + " ".join(args)
+    if frame.head == "ord":
+        args = [_gloss_node(n) for _, n in frame.slots]
+        return "nth-" + (args[0] if args else "?")
     if frame.head in {"qnt", "dur", "before", "after", "can", "cause", "same", "sim"}:
         args = [_gloss_node(n) for _, n in frame.slots]
         return f"{_word(frame.head)} " + " ".join(args)

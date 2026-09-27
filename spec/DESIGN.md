@@ -109,6 +109,9 @@ E[t] = W_kind[k] + W_field[f] + W_root[r]
 puts all transfer-events in one region before any gradient step.
 BPE cannot offer an equivalent bias.
 
+**Numbers are not ranks.** `qnt` is how-many, `num` is digit spelling, `ord` is nth.
+Mixing them is how models lose “third planet.”
+
 **Tiny kernel lexicon.** A few hundred atoms, composition for the rest.
 Embedding matrix is small; parameters go to the residual stream.
 

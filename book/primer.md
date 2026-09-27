@@ -884,6 +884,25 @@ asrt ( exist ( piko = $1 ) ( holi thm $1 loc here ) ) .
 
 *There is a cat here.*
 
+*The only K that P is X* uniquifies **P**, then names X. Identity sits **next to** `one`, not inside it.
+
+```
+asrt ( and
+  ( one ( pugo = $1 ) ( ruga thm $1 ) )
+  ( same ( pugo name rex ) $1 )
+) .
+```
+
+*Rex is the only red dog.* If you put `same` inside `one`, you have said “exactly one thing is Rex and red,” which is true as soon as Rex is red.
+
+Rank is `ord`, not `num` or `qnt`. *The third planet from the Sun:*
+
+```
+( plano def src ( suno def ) mod ( ord 3 ) )
+```
+
+`mexo` is ground/soil. The planet Earth is `( plano name earth )`. Life as a thing is `pivo` (the event *live* is `pivi`).
+
 <details>
 <summary>Answers</summary>
 
@@ -905,6 +924,14 @@ asrt ( all ( pamo = $1 ) ( vidi exp $1 thm ( suno def ) ) ) .
 
 <!--ex
 {"id": "11-scope", "type": "choice", "prompt": "In Nex, quantifier scope is…", "choices": ["inferred from context", "which operator wraps which tree", "marked with gender"], "answer": 1}
+-->
+
+<!--ex
+{"id": "11-only", "type": "choice", "prompt": "“Rex is the only red dog.” Identity (same) goes…", "choices": ["inside one, with the redness", "as a sibling conjunct of one", "in a relative clause on one"], "answer": 1}
+-->
+
+<!--ex
+{"id": "11-ord", "type": "match", "prompt": "Write the Nex NP: the third planet from the Sun.", "hint": "plano def, src suno, mod ( ord 3 )", "accept": ["( plano def src ( suno def ) mod ( ord 3 ) )"]}
 -->
 
 # 12. Growing words instead of minting them
@@ -1125,7 +1152,7 @@ Keep this page. It is a kernel you can actually talk with.
 
 **Features** — `not past now fut done ong hab may must def ind pl very more most`
 
-**Operators** — `and or if seq all some none exist one can qnt before after`
+**Operators** — `and or if seq all some none exist one can qnt num ord before after`
 
 **Skeleton**
 

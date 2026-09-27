@@ -94,7 +94,7 @@ English dummy *it* (*it is raining*, *what time is it*) is dropped, not `unk`.
 ## 7. Operators (heads)
 
 Logic: `and` `or` `if` `then` `seq` `cause` `can` `same` `sim`
-Quant: `all` `some` `exist` `none` `one` `mostq` `qnt` `num`
+Quant: `all` `some` `exist` `none` `one` `mostq` `qnt` `num` `ord`
 Time: `before` `after` `dur`
 Struct: `spell`
 Derive: `agto` doer-of · `thmo` undergoer-of · `inso` tool-of · `plao` place-of
@@ -103,8 +103,11 @@ Derive: `agto` doer-of · `thmo` undergoer-of · `inso` tool-of · `plao` place-
 `seq` args: events in order. `and` does not imply order.
 `all`/`some`/`none`/`exist`/`one`/`mostq`: `( all ( KIND = $N ) ( CLAIM... ) )`.
 Scope = wrapping. Different wrap ⇒ different meaning.
-`qnt`: `( qnt ( UNIT ) NUMBER )`.
-`num`: digits as separate args, MSD first: `( num 1 2 3 )` = 123. Bare integers allowed as args and mean the same.
+`one` = exactly one K such that CLAIM. CLAIM is the property you are uniquifying, not the identity of a known referent. See §15.
+`qnt`: how-many — `( qnt ( UNIT ) NUMBER )`. Not rank, not a spelled numeral.
+`num`: digit spelling, MSD first — `( num 1 2 3 )` = 123. Use only to explode multi-digit tokens. Bare integers as args are already numbers.
+`ord`: rank — `( ord N )` as `mod`. *third* = `( ord 3 )`. Never `num` or `qnt` for ordinals.
+Nth-from-origin: `( KIND def src ORIGIN mod ( ord N ) )`.
 `before`/`after`: `( before nowt ( qnt ( dieno ) 1 ) )` = yesterday; `after` = tomorrow.
 `can`: wraps an event. `must`/`may` may instead be features on the event.
 `agto`: `( agto EVENT )` or packed kind in `-u` (§10). Extra roles allowed: `( agto seni thm ( mabo ) )`.
@@ -118,6 +121,8 @@ Scope = wrapping. Different wrap ⇒ different meaning.
 5. Prefer packed `-u` kinds over `( agto EVT )` when the pack exists.
 6. Prefer explicit `mod` over nested-frame sugar.
 7. First mention binds `= $N`; later mentions are `$N` only. Number from `$1` up; do not reuse a number for a new referent. No gendered pronouns.
+8. Bind only if `$N` is used again (or is the WH unknown under `ask`). A one-shot description gets no `= $N`.
+9. At most one `=` per frame. Parser accepts `=` after roles; emit it after features.
 
 ## 9. Names, OOV, numbers
 
@@ -146,7 +151,7 @@ Every kernel event has a packed doer (`doni`→`donu`, `koli`→`kolu`, …). If
 Illoc: asrt ask cmd opt exch
 Roles: agt exp rec thm cnt ins mnr src path gol loc tmp cau prp ben pos rel mod name unit
 Features: not past now fut done ong hab may must seen heard said inf def ind mass sg pl very more most
-Ops: and or if then seq all some exist none one mostq can cause same sim qnt num spell before after dur agto thmo inso plao
+Ops: and or if then seq all some exist none one mostq can cause same sim qnt num ord spell before after dur agto thmo inso plao
 Deix: spk hrd slf this that here there nowt unk
 Struct: ( ) = .
 
@@ -157,15 +162,16 @@ voni move agt,path · veli go agt,gol,src · vini come agt,gol,src · vaki run a
 vidi see exp,thm,ins · suli hear exp,thm · nusi smell exp,thm · sati taste exp,thm · suci touch agt,thm · saki say agt,cnt,rec · suji ask(utter) agt,cnt,rec · sowi answer agt,cnt,rec · sari write agt,thm,rec · seni read agt,thm · sugi call agt,thm · soti shout agt,cnt · sini mean agt,cnt
 kuni know exp,thm · keni think exp,cnt · kabi believe exp,cnt · koli remember exp,thm · kefi forget exp,thm · kedi learn agt,thm · kaci teach agt,thm,rec · kawi want exp,thm · nidi need exp,thm · kiri decide agt,cnt · kuxi understand exp,thm · kifi doubt exp,cnt · kopi hope exp,cnt
 fili feel exp,thm · fali like/love exp,thm · fori fear exp,thm · fegi anger-at exp,thm · fosi sad-about exp,thm · feni pain/hurt exp,thm
-pivi live agt,loc · podi die thm · pusi eat agt,thm · pibi drink agt,thm · posi sleep agt,loc · pawi wake agt · pefi breathe agt · paxi be-born thm
+pivi live agt,loc · podi die thm · pusi eat agt,thm · pibi drink agt,thm · posi sleep agt,loc · pawi wake agt · pefi breathe agt · paxi be-born thm  (kind of living: pivo)
 hazi happen thm,loc,tmp · heni become thm,mod · hosi start agt,thm · hofi end/stop agt,thm · havi have/own agt,thm · holi be-at thm,loc · haci cause agt,thm · huti change agt,thm · hexi exist thm,loc · redi be-ready thm,prp
 
 Perceiver verbs use `exp` not `agt`. `suji` = speech-act ask; illocution `ask` is the sentence force.
 
 ## 13. Primitive kinds (`-o`)
 
-pamo person · pino people · peko body · pabo child · palto adult · pexo animal · pugo dog · piko cat · pico bird · pifo fish · puko chicken · suno sun · wino wind
-moto thing · miko tool · mabo book · melo food · mowo water · mafo fire · mazo air · mexo earth · meso house · mako machine · muko cloak/coat · teso telescope
+pamo person · pino people · peko body · pabo child · palto adult · pexo animal · pugo dog · piko cat · pico bird · pifo fish · puko chicken · pivo life · suno sun · wino wind
+celo sky-body · plano planet · stelo star  (`suno` = the Sun; `mexo` = ground/soil, not the planet)
+moto thing · miko tool · mabo book · melo food · mowo water · mafo fire · mazo air · mexo ground · meso house · mako machine · muko cloak/coat · teso telescope
 wodo word · wixo idea · weso story · wako language · nexo Nex · namo name
 loko place · lano land · livo city · laro room · lefo side · liso inside · laso outside
 toko time · dieno day · noco night · yaro year · horo hour · mino minute
@@ -197,6 +203,13 @@ Resolve before writing:
 9. WH: bind an unbound kind (`pamo` who, `moto` what, `loko` where, `toko` when) as `$N` under `ask`.
 10. Commands: `cmd`, agent usually `hrd`.
 11. Missing root: compose; do not output English words as Nex heads.
+12. Ordinals: *first/second/third/…* = `mod ( ord N )`. *three X* = `qnt`. *123* = `( num 1 2 3 )` or integer `123`.
+13. *the only K that P is X* — uniquify P, then identify:
+    `( and ( one ( K = $n ) ( P[$n] ) ) ( same X $n ) )`.
+    Wrong: `( one ( K = $n ) ( and ( same $n X ) ( P ) ) )` — that is “exactly one thing that is X and P”, which is true as soon as X satisfies P.
+14. *known to P*: `( kuni exp unk thm ( P ) )`. Not an evidential feature.
+15. *harbor/have life*: `( havi agt $n thm ( pivo ) )`. `koso mod ( aliva )` is the property aliveness, not life-as-stuff.
+16. Planet Earth: `( plano def = $1 name earth )`. Never `mexo` (soil) or bare `loko` for that referent.
 
 ## 16. Nex → English
 
@@ -237,3 +250,6 @@ NX `cmd ( veli agt hrd gol ( meso def ) ) .`
 
 EN I want you to know Nex.
 NX `asrt ( kawi exp spk thm ( kuni exp hrd thm ( nexo ) ) ) .`
+
+EN Earth is the third planet from the Sun and the only astronomical object known to harbor life.
+NX `asrt ( and ( same ( plano def = $1 name earth ) ( plano def src ( suno def ) mod ( ord 3 ) ) ) ( one ( celo = $2 ) ( kuni exp unk thm ( havi agt $2 thm ( pivo ) ) ) ) ( same $1 $2 ) ) .`
