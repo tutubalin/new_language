@@ -1150,6 +1150,8 @@ Keep this page. It is a kernel you can actually talk with.
 `biga` big · `soma` small · `fasta` fast · `nova` new · `olda` old ·
 `trua` true · `erza` false
 
+**Cardinals** — `northa` `easta` `southa` `westa`
+
 **Features** — `not past now fut done ong hab may must def ind pl very more most`
 
 **Operators** — `and or if seq all some none exist one can qnt num ord before after`

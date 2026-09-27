@@ -183,7 +183,7 @@ guda good · bada bad · hapa happy · sada sad · trua true · erza false
 biga big · soma small · nova new · olda old · longa long · kuta short · higa high · lowa low · stroa strong · weka weak
 ruga red · blua blue · grea green · wita white · blaka black · yela yellow
 hota hot · niva cold · warma warm · fasta fast · slowa slow · hara hard/difficult · sofa soft/easy · fulla full · ema empty · opena open · klosa closed · tita tight · lusa loose
-sama same · ota other · neara near · fara far · northa north
+sama same · ota other · neara near · fara far · northa north · easta east · southa south · westa west
 aliva alive · deda dead · reda ready · fria free · equa equal · multa many · fewa few · sura sure
 
 Predicative: `( QUAL thm X )`. Attributive: `( KIND mod ( QUAL ) )`.
