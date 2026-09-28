@@ -158,24 +158,24 @@ Struct: ( ) = .
 ## 12. Events (head `-i`) — gloss · default roles
 
 doni give agt,thm,rec · daki take agt,thm,src · dami put agt,thm,gol · dofi make agt,thm · deki do agt,thm · dusi use agt,thm,ins · duri work agt,loc · doli play agt,thm · deni send agt,thm,rec · dovi open agt,thm · duci close agt,thm · dabi break agt,thm · daji join agt,thm · diki cut agt,thm,ins · dopi buy agt,thm,src · desi sell agt,thm,rec · dapi pay agt,thm,rec · duli help agt,thm · debi hit agt,thm,ins · dafi hold agt,thm · duxi find agt,thm · deti wait agt,thm · dayi try agt,thm · degi get agt,thm,src
-voni move agt,path · veli go agt,gol,src · vini come agt,gol,src · vaki run agt,gol · visi sit agt,loc · vosi stand agt,loc · vupi carry agt,thm,gol · vali turn agt,gol · vefi fall thm,loc · voxi fly agt,gol · voyi swim agt,gol · voti walk agt,gol · vuli leave agt,src · vani arrive agt,gol · voci stay agt,loc
+voni move agt,path · veli go agt,gol,src · vini come agt,gol,src · vaki run agt,gol · visi sit agt,loc · vosi stand agt,loc · vupi carry agt,thm,gol · vali turn agt,gol · vefi fall thm,loc · voxi fly agt,gol · voyi swim agt,gol · voti walk agt,gol · vuli leave agt,src · vani arrive agt,gol · voci stay agt,loc · flui flow agt,gol,src
 vidi see exp,thm,ins · suli hear exp,thm · nusi smell exp,thm · sati taste exp,thm · suci touch agt,thm · saki say agt,cnt,rec · suji ask(utter) agt,cnt,rec · sowi answer agt,cnt,rec · sari write agt,thm,rec · seni read agt,thm · sugi call agt,thm · soti shout agt,cnt · sini mean agt,cnt
 kuni know exp,thm · keni think exp,cnt · kabi believe exp,cnt · koli remember exp,thm · kefi forget exp,thm · kedi learn agt,thm · kaci teach agt,thm,rec · kawi want exp,thm · nidi need exp,thm · kiri decide agt,cnt · kuxi understand exp,thm · kifi doubt exp,cnt · kopi hope exp,cnt
 fili feel exp,thm · fali like/love exp,thm · fori fear exp,thm · fegi anger-at exp,thm · fosi sad-about exp,thm · feni pain/hurt exp,thm
 pivi live agt,loc · podi die thm · pusi eat agt,thm · pibi drink agt,thm · posi sleep agt,loc · pawi wake agt · pefi breathe agt · paxi be-born thm  (kind of living: pivo)
-hazi happen thm,loc,tmp · heni become thm,mod · hosi start agt,thm · hofi end/stop agt,thm · havi have/own agt,thm · holi be-at thm,loc · haci cause agt,thm · huti change agt,thm · hexi exist thm,loc · redi be-ready thm,prp
+hazi happen thm,loc,tmp · heni become thm,mod · hosi start agt,thm · hofi end/stop agt,thm · havi have/own agt,thm · holi be-at thm,loc · haci cause agt,thm · huti change agt,thm · hexi exist thm,loc · redi be-ready thm,prp · presi press agt,thm · stoki store agt,thm,loc · viki win agt,thm · bati fight agt,thm · koki cook agt,thm · akti act/perform agt,thm · lidi lead/direct agt,thm · pubi publish/release agt,thm,tmp
 
 Perceiver verbs use `exp` not `agt`. `suji` = speech-act ask; illocution `ask` is the sentence force.
 
 ## 13. Primitive kinds (`-o`)
 
-pamo person · pino people · peko body · pabo child · palto adult · pexo animal · pugo dog · piko cat · pico bird · pifo fish · puko chicken · pivo life · suno sun · wino wind
+pamo person · pino people · peko body · pabo child · palto adult · pexo animal · pugo dog · piko cat · pico bird · pifo fish · puko chicken · pivo life · vego plant · bito insect · buto butterfly · speko species · sito cell · suno sun · wino wind
 celo sky-body · plano planet · stelo star  (`suno` = the Sun; `mexo` = ground/soil, not the planet)
-moto thing · miko tool · mabo book · melo food · mowo water · mafo fire · mazo air · mexo ground · meso house · mako machine · muko cloak/coat · teso telescope
-wodo word · wixo idea · weso story · wako language · nexo Nex · namo name
-loko place · lano land · livo city · laro room · lefo side · liso inside · laso outside
+moto thing · miko tool · mabo book · melo food · mowo water · mafo fire · mazo air · mexo ground · meso house · mako machine · muko cloak/coat · teso telescope · keyo key · cordo string · ergo energy · oxo oxygen · pago paper · rufo roof
+wodo word · wixo idea · weso story · wako language · nexo Nex · namo name · muzo music · piano piano · filmo film
+loko place · lano land · livo city · kapo capital · laro room · lefo side · liso inside · laso outside · fluo river · maro sea · monto mountain · silvo forest · lito coast · bordo border · atmo atmosphere · armo army · firmo company
 toko time · dieno day · noco night · yaro year · horo hour · mino minute
-koso state (nominalizer) · evo event (nominalizer) · relo relation · sovo sound · luxo light · tino color · hato way · qeso question · toso tree · roso rock · paso path · mano hand · hedo head · eyo eye
+koso state (nominalizer) · evo event (nominalizer) · relo relation · sovo sound · luxo light · tino color · hato way · qeso question · toso tree · roso rock · metalo metal · paso path · mano hand · hedo head · eyo eye
 
 ## 14. Qualities (`-a`)
 
@@ -184,7 +184,7 @@ biga big · soma small · nova new · olda old · longa long · kuta short · hi
 ruga red · blua blue · grea green · wita white · blaka black · yela yellow
 hota hot · niva cold · warma warm · fasta fast · slowa slow · hara hard/difficult · sofa soft/easy · fulla full · ema empty · opena open · klosa closed · tita tight · lusa loose
 sama same · ota other · neara near · fara far · northa north · easta east · southa south · westa west
-aliva alive · deda dead · reda ready · fria free · equa equal · multa many · fewa few · sura sure
+aliva alive · deda dead · reda ready · fria free · equa equal · multa many · fewa few · sura sure · grava important · skara scary
 
 Predicative: `( QUAL thm X )`. Attributive: `( KIND mod ( QUAL ) )`.
 

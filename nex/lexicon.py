@@ -212,6 +212,7 @@ EVENTS: tuple[Entry, ...] = (
     _e("vuli", "evt", "motion", "leave", "leave/left/leaving", "agt src"),
     _e("vani", "evt", "motion", "arrive", "arrive/arrived/arriving", "agt gol"),
     _e("voci", "evt", "motion", "stay", "stay/stayed/staying/remain", "agt loc"),
+    _e("flui", "evt", "motion", "flow", "flow/flowed/flowing", "agt gol src"),
     # perception / speech  s-
     _e("vidi", "evt", "sense", "see", "see/saw/seen/seeing/look/looked", "exp thm ins"),
     _e("suli", "evt", "sense", "hear", "hear/heard/hearing/listen", "exp thm"),
@@ -268,6 +269,14 @@ EVENTS: tuple[Entry, ...] = (
     _e("hexi", "evt", "change", "exist", "exist/exists/existed", "thm loc"),
     # ready / consume (for classic ambiguity examples)
     _e("redi", "evt", "change", "be-ready", "ready", "thm prp"),
+    _e("presi", "evt", "transfer", "press", "press/pressed/pressing", "agt thm"),
+    _e("stoki", "evt", "change", "store", "store/stored/keep/kept", "agt thm loc"),
+    _e("viki", "evt", "change", "win", "win/won/winning/defeat/defeated", "agt thm"),
+    _e("bati", "evt", "transfer", "fight", "fight/fought/fighting/wrestle", "agt thm"),
+    _e("koki", "evt", "life", "cook", "cook/cooked/cooking", "agt thm"),
+    _e("akti", "evt", "speech", "act", "act/acted/acting/perform/star-in", "agt thm"),
+    _e("lidi", "evt", "cognition", "lead", "lead/led/direct/directed", "agt thm"),
+    _e("pubi", "evt", "speech", "publish", "publish/published/release/released", "agt thm tmp"),
 )
 
 # ---------------------------------------------------------------------------
@@ -286,6 +295,11 @@ KINDS: tuple[Entry, ...] = (
     _e("pico", "kind", "life", "bird", "bird"),
     _e("pifo", "kind", "life", "fish", "fish"),
     _e("puko", "kind", "life", "chicken", "chicken"),
+    _e("vego", "kind", "life", "plant", "plant/plants"),
+    _e("bito", "kind", "life", "insect", "insect/bug"),
+    _e("buto", "kind", "life", "butterfly", "butterfly"),
+    _e("speko", "kind", "life", "species", "species"),
+    _e("sito", "kind", "life", "cell", "cell"),
     _e("suno", "kind", "life", "sun", "sun"),
     _e("wino", "kind", "life", "wind", "wind"),
     _e("pivo", "kind", "life", "life", "life", notes="kind; event pivi, quality aliva"),
@@ -323,6 +337,14 @@ KINDS: tuple[Entry, ...] = (
     _e("lefo", "kind", "place", "side", "side"),
     _e("liso", "kind", "place", "inside", "inside/interior"),
     _e("laso", "kind", "place", "outside", "outside"),
+    _e("fluo", "kind", "place", "river", "river", notes="kind; event flui"),
+    _e("maro", "kind", "place", "sea", "sea/ocean"),
+    _e("monto", "kind", "place", "mountain", "mountain/hill"),
+    _e("silvo", "kind", "place", "forest", "forest/woods"),
+    _e("lito", "kind", "place", "coast", "coast/shore"),
+    _e("bordo", "kind", "place", "border", "border/frontier"),
+    _e("kapo", "kind", "place", "capital", "capital"),
+    _e("atmo", "kind", "place", "air-layer", "atmosphere"),
     _e("toko", "kind", "time", "time", "time/when"),
     _e("dieno", "kind", "time", "day", "day/yesterday/tomorrow"),
     _e("noco", "kind", "time", "night", "night"),
@@ -339,11 +361,23 @@ KINDS: tuple[Entry, ...] = (
     _e("qeso", "kind", "abstract", "question", "question"),
     _e("toso", "kind", "matter", "tree", "tree"),
     _e("roso", "kind", "matter", "rock", "rock/stone"),
+    _e("metalo", "kind", "matter", "metal", "metal"),
     _e("paso", "kind", "matter", "path", "path/road/way-path"),
     _e("mano", "kind", "people", "hand", "hand"),
     _e("hedo", "kind", "people", "head", "head"),
     _e("eyo", "kind", "people", "eye", "eye"),
     _e("namo", "kind", "info", "name", "name"),
+    _e("muzo", "kind", "sense", "music", "music"),
+    _e("piano", "kind", "sense", "piano", "piano"),
+    _e("keyo", "kind", "matter", "key", "key"),
+    _e("cordo", "kind", "matter", "string", "string/cord"),
+    _e("ergo", "kind", "matter", "energy", "energy"),
+    _e("oxo", "kind", "matter", "oxygen", "oxygen"),
+    _e("filmo", "kind", "info", "film", "film/movie"),
+    _e("pago", "kind", "matter", "paper", "paper/page"),
+    _e("armo", "kind", "people", "army", "army"),
+    _e("firmo", "kind", "people", "company", "company/firm"),
+    _e("rufo", "kind", "matter", "roof", "roof"),
 )
 
 
@@ -446,6 +480,8 @@ QUALS: tuple[Entry, ...] = (
     _e("warma", "qual", "phys", "warm", "warm"),
     _e("tita", "qual", "phys", "tight", "tight"),
     _e("lusa", "qual", "phys", "loose", "loose"),
+    _e("grava", "qual", "value", "important", "important/historic"),
+    _e("skara", "qual", "feeling", "scary", "scary/horror/horrifying"),
 )
 
 DIGITS = tuple(_e(str(i), "struct", "quant", str(i), str(i)) for i in range(10))
@@ -733,6 +769,7 @@ def validate_lexicon() -> list[str]:
     allowed_families = {
         "red": "ready",  # reda (quality) / redi (be-ready)
         "piv": "live",  # pivi (event live) / pivo (kind life)
+        "flu": "flow",  # flui (event flow) / fluo (kind river)
     }
     for e in LEXICON.values():
         if e.kind not in {"evt", "kind", "qual"}:

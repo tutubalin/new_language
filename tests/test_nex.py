@@ -23,7 +23,7 @@ class LexiconTests(unittest.TestCase):
             if e.kind not in {"evt", "kind", "qual"} or e.form in derived:
                 continue
             stems[e.form[:-1]].append(e)
-        allowed = {"red", "piv"}
+        allowed = {"red", "piv", "flu"}
         for stem, items in stems.items():
             if stem in allowed:
                 continue
@@ -73,6 +73,65 @@ class ParserTests(unittest.TestCase):
         )
         p = parse(src)
         self.assertEqual(p.statements[0].frame.head, "and")
+
+    def test_wiki_butterfly(self):
+        src = (
+            "asrt ( and "
+            "( same ( buto name iolausmermis = $1 ) "
+            "( speko def mod ( buto ) ) ) "
+            "( sari past agt ( pamo name druce ) thm $1 tmp ( yaro mod ( num 1 8 9 6 ) ) ) "
+            "( holi thm $1 loc ( lano name kenya ) ) "
+            "( holi thm $1 loc ( silvo ) ) "
+            "( pusi hab agt ( bito rel ( heni thm slf mod ( buto ) ) ) thm ( vego ) ) "
+            ") ."
+        )
+        self.assertEqual(parse(src).statements[0].illoc, "asrt")
+
+    def test_wiki_danube(self):
+        src = (
+            "asrt ( and "
+            "( same ( fluo name danube = $1 ) ( fluo mod ( longa more ) ) ) "
+            "( flui hab agt $1 src ( silvo name blackforest loc ( lano name germany ) ) "
+            "gol ( maro name blacksea ) ) "
+            "( daji hab agt $1 thm ( lano pl ) ) "
+            ") ."
+        )
+        parse(src)
+
+    def test_wiki_piano(self):
+        src = (
+            "asrt ( and "
+            "( piano def = $1 ) "
+            "( hazi thm ( sovo ) cau ( presi agt unk thm ( keyo pos $1 ) ) ) "
+            "( havi agt $1 thm ( qnt ( keyo ) 88 ) ) "
+            ") ."
+        )
+        parse(src)
+
+    def test_wiki_photosynthesis(self):
+        src = (
+            "asrt ( huti hab agt ( vego ) thm ( luxo src ( suno ) ) "
+            "prp ( stoki agt slf thm ( ergo ) ) ) ."
+        )
+        parse(src)
+
+    def test_wiki_bronze(self):
+        src = (
+            "asrt ( same ( metalo name bronze = $1 ) "
+            "( metalo rel ( daji agt $1 thm ( metalo name copper ) "
+            "thm ( metalo name tin ) ) ) ) ."
+        )
+        parse(src)
+
+    def test_wiki_film(self):
+        src = (
+            "asrt ( and "
+            "( filmo name pathimoonamnumberveedu = $1 mod ( skara ) ) "
+            "( lidi past agt ( pamo name baby ) thm $1 ) "
+            "( pubi past agt unk thm $1 tmp ( yaro mod ( num 1 9 9 0 ) ) ) "
+            ") ."
+        )
+        parse(src)
 
     def test_give(self):
         src = (
