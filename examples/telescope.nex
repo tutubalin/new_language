@@ -1,0 +1,2 @@
+asrt ( vidi past exp spk thm ( pamo def = $1 ) ins ( teso def ) ) .
+asrt ( vidi past exp spk thm ( pamo def = $1 rel ( havi agt $1 thm ( teso def ) ) ) ) .
